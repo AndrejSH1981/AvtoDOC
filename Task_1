@@ -1,0 +1,100 @@
+unit Unit1;
+
+interface
+
+uses
+  SysUtils, Classes, Math;
+
+type
+  TBigInt = class
+  private
+    s11, s22: string[150];
+    i11, i22: double;
+    d_result: double;
+    i_result: Int64;
+    s_result: string[150];
+ public
+    procedure ReadFromFile;
+    procedure AddNumbers;
+    procedure WriteToFile;
+  end;
+
+implementation
+
+procedure TBigInt.ReadFromFile;
+var
+  f: TextFile;
+begin
+  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
+  Reset(f);
+  ReadLn(f, i11);
+  ReadLn(f, i22);
+  CloseFile(f);
+
+    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
+  Reset(f);
+  ReadLn(f, s11);
+  ReadLn(f, s22);
+  CloseFile(f);
+end;
+
+procedure TBigInt.AddNumbers;
+
+begin
+  d_result := i11 + i22;
+end;
+
+procedure TBigInt.WriteToFile;
+var
+  MyFile: TextFile;
+  StringValue: String;
+
+begin
+    Str(d_result: 30, StringValue);
+
+  s_result := StringValue;
+
+  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\output.txt');
+  Rewrite(MyFile);
+  Writeln(MyFile, s11);
+  Writeln(MyFile, s22);
+    Writeln(MyFile, '-----------------');
+  Writeln(MyFile, s_result);
+  CloseFile(MyFile);
+end;
+
+  var
+x: TBigInt;
+
+begin
+
+x := TBigInt.Create;
+try
+x.ReadFromFile;
+x.AddNumbers;
+x.WriteToFile;
+finally
+x.Free;
+end;
+end.
+
+//==========================================
+
+program Project1;
+
+uses
+  Forms,
+  Unit1 in 'Unit1.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.Run;
+end.
+
+
+
+
+
+
