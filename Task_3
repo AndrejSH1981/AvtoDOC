@@ -1,0 +1,88 @@
+CREATE PROCEDURE dbo.CreateAndFillTables  
+AS  
+BEGIN  
+ /* Удаляет таблиц, если они существуют  */
+     IF OBJECT_ID('tempdb..#clients') IS NOT NULL DROP TABLE #clients;
+      IF OBJECT_ID('tempdb..#goods') IS NOT NULL DROP TABLE #goods;
+       IF OBJECT_ID('tempdb..#orders') IS NOT NULL DROP TABLE #orders;
+
+   /* Создаёт таблицы клиентов  */
+    CREATE TABLE #clients (
+        id_clients INT IDENTITY(1,1) PRIMARY KEY,
+        name NVARCHAR(50) NOT NULL  
+    );
+
+    /* Заполняет таблицы клиентов  */
+    INSERT INTO #clients (name)
+    VALUES ('Ivan'), ('Fedor'), ('Stepan'), ('Mariy'), 
+           ('Anton'), ('Nikolai'), ('Petr'), ('Anna'), 
+           ('Maria'), ('Dmitriy');
+
+    /* Создание таблицы товаров  */
+    CREATE TABLE #goods (
+        id_goods INT IDENTITY(1,1) PRIMARY KEY,
+        name NVARCHAR(100) NOT NULL  
+    );
+
+    /* Заполняет таблицы товаров  */
+    INSERT INTO #goods (name)
+    VALUES ('Motor oil'), ('Oil transmission'), 
+           ('Antifris'), ('Brake fluid'), 
+           ('Glass front'), ('Brake pads'), 
+           ('bumper'), ('spark plug'), 
+           ('Battery'), ('Oil filter'), 
+           ('Air filter');
+
+    /* Создаёт таблицы заказов  */
+    CREATE TABLE #orders (
+        id_orders INT IDENTITY(1,1) PRIMARY KEY,
+        id_clients INT NOT NULL,
+        id_goods INT NOT NULL,
+        FOREIGN KEY (id_clients) REFERENCES #clients(id_clients),
+        FOREIGN KEY (id_goods) REFERENCES #goods(id_goods)
+		);
+
+    /* Заполненяет таблицы заказов  */
+    DECLARE @i INT = 0;
+     WHILE @i < 1000000  
+      BEGIN  
+        INSERT INTO #orders (id_clients, id_goods)
+        VALUES (
+            CAST(1 + ABS(CHECKSUM(NEWID())) % 10 AS INT),  -- Случайный id_clients от 1 до 10  
+            CAST(1 + ABS(CHECKSUM(NEWID())) % 11 AS INT)   -- Случайный id_goods от 1 до 11  
+			);
+        SET @i = @i + 1;
+    END;
+
+    /* Выводит ТОП 5 клиентов с максимальным количеством заказов  */
+    SELECT TOP 5 
+        c.name AS Имя_клиента,
+        COUNT(o.id_orders) AS Количество_заказов  
+    FROM #clients c  
+    JOIN #orders o ON c.id_clients = o.id_clients  
+    GROUP BY c.name  
+    ORDER BY COUNT(o.id_orders) DESC;
+
+    /* Удаляет временных таблиц  */
+    DROP TABLE #clients;
+     DROP TABLE #goods;
+      DROP TABLE #orders;
+END;
+
+
+/*=======================================================*/
+
+/* проверка
+EXECUTE dbo.CreateAndFillTables;
+GO
+*/
+
+
+
+
+
+
+
+
+
+
