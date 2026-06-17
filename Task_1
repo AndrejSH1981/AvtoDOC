@@ -25,13 +25,13 @@ procedure TBigInt.ReadFromFile;
 var
   f: TextFile;
 begin
-  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
+  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использую свой рабочий стол для файла
   Reset(f);
   ReadLn(f, i11);
   ReadLn(f, i22);
   CloseFile(f);
 
-    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
+    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использую свой рабочий стол для файла
   Reset(f);
   ReadLn(f, s11);
   ReadLn(f, s22);
@@ -54,7 +54,7 @@ begin
 
   s_result := StringValue;
 
-  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\output.txt');
+  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использую свой рабочий стол для файла
   Rewrite(MyFile);
   Writeln(MyFile, s11);
   Writeln(MyFile, s22);
