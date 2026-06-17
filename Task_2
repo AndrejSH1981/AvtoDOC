@@ -28,7 +28,9 @@ END;
 
 
 /*=======================================================*/
-/*
-SELECT dbo.IsFibonacci(5); → возвращает "1"
-SELECT dbo.IsFibonacci(7); → возвращает "0"
-*/
+
+SELECT dbo.IsFibonacci(5);/* → возвращает "1" */
+SELECT dbo.IsFibonacci(7);/* → возвращает "0" */
+SELECT dbo.IsFibonacci(8);/* → возвращает "1" */
+SELECT dbo.IsFibonacci(22);/* → возвращает "0" */
+
