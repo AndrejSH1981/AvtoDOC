@@ -1,3 +1,4 @@
+
 CREATE FUNCTION dbo.IsFibonacci (@num INT)
 RETURNS INT  
 AS  
@@ -5,16 +6,16 @@ BEGIN
 DECLARE @x INT = 0;
     DECLARE @a INT = 0;
     DECLARE @b INT = 1;
-    DECLARE @temp INT;
+    DECLARE @c INT;
 
     IF @num < 2  
         RETURN 0;
 
     WHILE @b < @num  
     BEGIN  
-        SET @temp = @b;
+        SET @c = @b;
         SET @b = @a + @b;
-        SET @a = @temp;
+        SET @a = @c;
     END
 
     IF @b = @num OR @num = 1 
@@ -23,6 +24,7 @@ DECLARE @x INT = 0;
     ELSE  
 	SET @x = 0;
         RETURN @x;
+
 END;
 
 
