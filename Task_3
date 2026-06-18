@@ -1,7 +1,7 @@
 CREATE PROCEDURE dbo.CreateAndFillTables  
 AS  
 BEGIN  
- /* Удаляет таблиц, если они существуют  */
+ /* Удаляет таблицы, если они существуют  */
      IF OBJECT_ID('tempdb..#clients') IS NOT NULL DROP TABLE #clients;
       IF OBJECT_ID('tempdb..#goods') IS NOT NULL DROP TABLE #goods;
        IF OBJECT_ID('tempdb..#orders') IS NOT NULL DROP TABLE #orders;
@@ -42,14 +42,14 @@ BEGIN
         FOREIGN KEY (id_goods) REFERENCES #goods(id_goods)
 		);
 
-    /* Заполненяет таблицы заказов  */
+    /* Заполненяет таблицы заказов. здесь случайный id_clients от 1 до 10 и случайный id_goods от 1 до 11     */
     DECLARE @i INT = 0;
      WHILE @i < 1000000  
       BEGIN  
         INSERT INTO #orders (id_clients, id_goods)
         VALUES (
-            CAST(1 + ABS(CHECKSUM(NEWID())) % 10 AS INT),  -- Случайный id_clients от 1 до 10  
-            CAST(1 + ABS(CHECKSUM(NEWID())) % 11 AS INT)   -- Случайный id_goods от 1 до 11  
+            CAST(1 + ABS(CHECKSUM(NEWID())) % 10 AS INT), 
+            CAST(1 + ABS(CHECKSUM(NEWID())) % 11 AS INT)    
 			);
         SET @i = @i + 1;
     END;
