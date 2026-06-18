@@ -1,4 +1,4 @@
-unit Unit1;
+unit Unit1; // в этом модуле читаются из файла, щитаются и записываются в файл два числа
 
 interface
 
@@ -25,13 +25,13 @@ procedure TBigInt.ReadFromFile;
 var
   f: TextFile;
 begin
-  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использую свой рабочий стол для файла
+  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использовал рабочий стол своего компьютера
   Reset(f);
   ReadLn(f, i11);
   ReadLn(f, i22);
   CloseFile(f);
 
-    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использую свой рабочий стол для файла
+    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использовал рабочий стол своего компьютера
   Reset(f);
   ReadLn(f, s11);
   ReadLn(f, s22);
@@ -54,7 +54,7 @@ begin
 
   s_result := StringValue;
 
-  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использую свой рабочий стол для файла
+  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использовал рабочий стол своего компьютера
   Rewrite(MyFile);
   Writeln(MyFile, s11);
   Writeln(MyFile, s22);
@@ -62,6 +62,18 @@ begin
   Writeln(MyFile, s_result);
   CloseFile(MyFile);
 end;
+end.
+
+//====================================================================
+
+unit ProcedureManager; // модуль для вызова процедур в модуле Unit1
+
+interface
+
+uses  
+  Unit1;
+
+implementation
 
   var
 x: TBigInt;
@@ -78,13 +90,13 @@ x.Free;
 end;
 end.
 
-//==========================================
+//====================================================================
 
-program Project1;
+program Project1; // инициализация
 
 uses
   Forms,
-  Unit1 in 'Unit1.pas';
+  ProcedureManager in 'ProcedureManager.pas';
 
 {$R *.res}
 
@@ -92,6 +104,17 @@ begin
   Application.Initialize;
   Application.Run;
 end.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
