@@ -1,4 +1,4 @@
-unit Unit1; // в этом модуле читаются из файла, щитаются и записываются в файл два числа
+unit Unit1;
 
 interface
 
@@ -9,10 +9,25 @@ type
   TBigInt = class
   private
     s11, s22: string[150];
-    i11, i22: double;
-    d_result: double;
-    i_result: Int64;
     s_result: string[150];
+
+    i11_mas: array [0..150] of integer;
+    i22_mas: array [0..150] of integer;
+    i_res_mas: array [0..150] of integer;
+    s_res_mas: array [0..150] of string;
+
+    i11_Length: integer;
+    i22_Length: integer;
+    i_small_11_Length: integer;
+    i_small_22_Length: integer;
+    i_big_11_Length: integer;
+    i_big_22_Length: integer;
+
+    i_hu: integer;
+    i_hu_shifter: integer;
+    i11_hu_shifter: integer;
+    i22_hu_shifter: integer;
+
  public
     procedure ReadFromFile;
     procedure AddNumbers;
@@ -25,13 +40,11 @@ procedure TBigInt.ReadFromFile;
 var
   f: TextFile;
 begin
-  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использовал рабочий стол своего компьютера
+  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
   Reset(f);
-  ReadLn(f, i11);
-  ReadLn(f, i22);
   CloseFile(f);
 
-    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использовал рабочий стол своего компьютера
+    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
   Reset(f);
   ReadLn(f, s11);
   ReadLn(f, s22);
@@ -39,73 +52,109 @@ begin
 end;
 
 procedure TBigInt.AddNumbers;
-
+var
+n: integer;
+v11: integer;
+v22: integer;
 begin
-  d_result := i11 + i22;
+  i11_Length := Length(s11);
+  i22_Length := Length(s22);
+
+  if i11_Length > i22_Length then
+  begin
+  i_hu := i11_Length;
+  i_small_22_Length := i11_Length - i22_Length;
+  i_big_22_Length := i_small_22_Length + i22_Length;
+    i_big_11_Length := 0;
+    i_small_11_Length := 0;
+  end;
+
+  if i11_Length < i22_Length then
+  begin
+  i_hu := i22_Length;
+  i_small_11_Length := i22_Length - i11_Length;
+  i_big_11_Length := i_small_11_Length + i11_Length;
+  i_big_22_Length := 0;
+  i_small_22_Length := 0;
+  end;
+
+  if i11_Length = i22_Length then
+  begin
+    i_hu := i11_Length;
+    i_big_11_Length := 0;
+    i_big_22_Length := 0;
+    i_small_11_Length := 0;
+    i_small_22_Length := 0;
+  end;
+
+
+    for v11 := 1 to i11_Length do
+    begin
+    i11_mas[v11 + i_small_11_Length] := StrToInt64(s11[v11]);
+    end;
+
+  for v22 := 1 to i22_Length do
+    begin
+    i22_mas[v22 + i_small_22_Length] := StrToInt64(s22[v22]);
+    end;
+
+    for n := 1 to i_hu do
+    begin
+    i11_hu_shifter := i11_Length - (n-1);
+    i22_hu_shifter := i22_Length - (n-1);
+    i_hu_shifter := i_hu - (n-1);
+
+        if i11_mas[i_hu_shifter] >=10 then
+        begin
+        i11_mas[i_hu_shifter] := i11_mas[i_hu_shifter] - 10;
+        i11_mas[i_hu_shifter-1] := i11_mas[i_hu_shifter-1] + 1;
+        end;
+
+        if i22_mas[i_hu_shifter] >=10 then
+        begin
+        i22_mas[i_hu_shifter] := i22_mas[i_hu_shifter] - 10;
+        i22_mas[i_hu_shifter-1] := i22_mas[i_hu_shifter-1] + 1;
+        end;
+
+    i_res_mas[i_hu_shifter] := i11_mas[i11_hu_shifter] + i22_mas[i22_hu_shifter];
+
+        if i_res_mas[i_hu_shifter+1] >=10 then
+        begin
+        i_res_mas[i_hu_shifter+1] := i_res_mas[i_hu_shifter+1] - 10;
+        i_res_mas[i_hu_shifter] := i_res_mas[i_hu_shifter] + 1;
+        end;
+        s_res_mas[i_hu_shifter] := IntToStr(i_res_mas[i_hu_shifter]);
+    end;
 end;
 
 procedure TBigInt.WriteToFile;
 var
   MyFile: TextFile;
   StringValue: String;
+  t: integer;
+  o: integer;
+  p: integer;
 
 begin
-    Str(d_result: 30, StringValue);
-
   s_result := StringValue;
 
-  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // использовал рабочий стол своего компьютера
+  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
   Rewrite(MyFile);
   Writeln(MyFile, s11);
   Writeln(MyFile, s22);
     Writeln(MyFile, '-----------------');
   Writeln(MyFile, s_result);
+
+   for p := 1 to i_hu do
+    begin
+  Write(MyFile, IntToStr(i_res_mas[p]));
+    end;
+
+
   CloseFile(MyFile);
 end;
+
 end.
-
-//====================================================================
-
-unit ProcedureManager; // модуль для вызова процедур в модуле Unit1
-
-interface
-
-uses  
-  Unit1;
-
-implementation
-
-  var
-x: TBigInt;
-
-begin
-
-x := TBigInt.Create;
-try
-x.ReadFromFile;
-x.AddNumbers;
-x.WriteToFile;
-finally
-x.Free;
-end;
-end.
-
-//====================================================================
-
-program Project1; // инициализация
-
-uses
-  Forms,
-  ProcedureManager in 'ProcedureManager.pas';
-
-{$R *.res}
-
-begin
-  Application.Initialize;
-  Application.Run;
-end.
-
-
 
 
 
