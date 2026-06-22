@@ -40,11 +40,11 @@ procedure TBigInt.ReadFromFile;
 var
   f: TextFile;
 begin
-  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
+  AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // файл был сохранён на рабочем столе моего компьютера
   Reset(f);
   CloseFile(f);
 
-    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
+    AssignFile(f, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // файл был сохранён на рабочем столе моего компьютера
   Reset(f);
   ReadLn(f, s11);
   ReadLn(f, s22);
@@ -138,7 +138,7 @@ var
 begin
   s_result := StringValue;
 
-  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\numbers.txt');
+  AssignFile(MyFile, 'C:\Users\PaPasha0804\Desktop\numbers.txt'); // файл был сохранён на рабочем столе моего компьютера
   Rewrite(MyFile);
   Writeln(MyFile, s11);
   Writeln(MyFile, s22);
